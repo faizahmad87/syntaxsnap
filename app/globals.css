@@ -1,26 +1,114 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* Semantic additions for this app */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-tokens: var(--tokens);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* zinc-950 background, zinc-900 card — always dark */
+  --background: oklch(0.09 0.004 258);
+  --foreground: oklch(0.985 0 0);
+
+  --card: oklch(0.145 0.004 258);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0.004 258);
+  --popover-foreground: oklch(0.985 0 0);
+
+  /* violet-500 primary */
+  --primary: oklch(0.606 0.239 277);
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* zinc-800 secondary/muted */
+  --secondary: oklch(0.21 0.006 258);
+  --secondary-foreground: oklch(0.87 0.004 258);
+  --muted: oklch(0.21 0.006 258);
+  --muted-foreground: oklch(0.552 0.006 258);
+
+  --accent: oklch(0.18 0.015 277);
+  --accent-foreground: oklch(0.702 0.18 277);
+
+  /* rose-500 destructive */
+  --destructive: oklch(0.645 0.246 16);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  /* emerald-500 success (correct answers) */
+  --success: oklch(0.696 0.191 155);
+  --success-foreground: oklch(0.985 0 0);
+
+  /* amber-500 warning / streaks */
+  --warning: oklch(0.769 0.184 84);
+  --warning-foreground: oklch(0.1 0 0);
+
+  /* yellow-400 tokens */
+  --tokens: oklch(0.852 0.199 92);
+
+  --border: oklch(0.21 0.006 258);
+  --input: oklch(0.21 0.006 258);
+  --ring: oklch(0.606 0.239 277);
+  --radius: 0.75rem;
+}
+
+/* Always dark — no light mode */
+html {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* PWA safe area utilities */
+@layer utilities {
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pb-nav {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
 }

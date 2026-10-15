@@ -1,0 +1,702 @@
+[
+  {
+    "id": "js-001",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "Which method creates a new array by transforming every element of the original?",
+    "options": [
+      { "id": "a", "text": "forEach()" },
+      { "id": "b", "text": "map()" },
+      { "id": "c", "text": "filter()" },
+      { "id": "d", "text": "reduce()" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "map() returns a new array of the same length with each element transformed by the callback. forEach() returns undefined."
+  },
+  {
+    "id": "js-002",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What does `typeof null` return in JavaScript?",
+    "options": [
+      { "id": "a", "text": "\"null\"" },
+      { "id": "b", "text": "\"undefined\"" },
+      { "id": "c", "text": "\"object\"" },
+      { "id": "d", "text": "\"boolean\"" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "typeof null === 'object' is a long-standing JavaScript bug from the language's first version. null is not an object, but typeof still reports it as one."
+  },
+  {
+    "id": "js-003",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "Which syntax correctly creates a Promise that resolves with the value 42?",
+    "options": [
+      { "id": "a", "text": "new Promise(resolve => resolve(42))" },
+      { "id": "b", "text": "Promise.create(42)" },
+      { "id": "c", "text": "Promise.new(42)" },
+      { "id": "d", "text": "new Promise(42)" }
+    ],
+    "correctOptionId": "a",
+    "explanation": "The Promise constructor takes an executor function with (resolve, reject) parameters. Promise.resolve(42) is the shorthand for already-resolved promises."
+  },
+  {
+    "id": "js-004",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What is the output of `[1, 2, 3].reduce((acc, x) => acc + x, 0)`?",
+    "options": [
+      { "id": "a", "text": "\"123\"" },
+      { "id": "b", "text": "6" },
+      { "id": "c", "text": "0" },
+      { "id": "d", "text": "[1, 2, 3]" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "reduce() accumulates values. Starting from 0: 0+1=1, 1+2=3, 3+3=6. The second argument to reduce() sets the initial accumulator value."
+  },
+  {
+    "id": "js-005",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "How do you perform a shallow copy of an object `obj`?",
+    "options": [
+      { "id": "a", "text": "Object.deepCopy(obj)" },
+      { "id": "b", "text": "obj.clone()" },
+      { "id": "c", "text": "{ ...obj }" },
+      { "id": "d", "text": "Object.freeze(obj)" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Spread syntax { ...obj } creates a shallow copy — a new object with the same top-level properties. Nested objects are still shared by reference."
+  },
+  {
+    "id": "js-006",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "Which keyword makes a variable block-scoped and reassignable?",
+    "options": [
+      { "id": "a", "text": "var" },
+      { "id": "b", "text": "let" },
+      { "id": "c", "text": "const" },
+      { "id": "d", "text": "static" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "let is block-scoped and can be reassigned. const is block-scoped but not reassignable. var is function-scoped and hoisted."
+  },
+  {
+    "id": "js-007",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What does `Array.isArray([])` return?",
+    "options": [
+      { "id": "a", "text": "false" },
+      { "id": "b", "text": "undefined" },
+      { "id": "c", "text": "true" },
+      { "id": "d", "text": "0" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Array.isArray() is the reliable way to check if a value is an array. typeof [] returns 'object', which is why Array.isArray exists."
+  },
+  {
+    "id": "js-008",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What is the output of `(function(){ return this; }).call(null)` in strict mode?",
+    "options": [
+      { "id": "a", "text": "window" },
+      { "id": "b", "text": "undefined" },
+      { "id": "c", "text": "null" },
+      { "id": "d", "text": "global" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "In strict mode, this is not coerced. When .call(null) is used, this is exactly null. In non-strict mode it would be coerced to the global object."
+  },
+  {
+    "id": "js-009",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "Which method removes the last element from an array and returns it?",
+    "options": [
+      { "id": "a", "text": "shift()" },
+      { "id": "b", "text": "splice()" },
+      { "id": "c", "text": "slice()" },
+      { "id": "d", "text": "pop()" }
+    ],
+    "correctOptionId": "d",
+    "explanation": "pop() removes and returns the last element, mutating the original array. shift() does the same for the first element."
+  },
+  {
+    "id": "js-010",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "How do you convert the string `\"42\"` to the number `42`?",
+    "options": [
+      { "id": "a", "text": "String(\"42\")" },
+      { "id": "b", "text": "Number(\"42\")" },
+      { "id": "c", "text": "\"42\".toNumber()" },
+      { "id": "d", "text": "parseInt(\"42\", 8)" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Number(\"42\") converts the string to the number 42. parseInt is also valid but parses differently for non-decimal strings. The radix of 8 in option d would parse it as octal."
+  },
+  {
+    "id": "js-011",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "Which method returns `true` if at least one element passes the test?",
+    "options": [
+      { "id": "a", "text": "every()" },
+      { "id": "b", "text": "find()" },
+      { "id": "c", "text": "some()" },
+      { "id": "d", "text": "includes()" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "some() returns true if the callback returns true for at least one element. every() requires all elements to pass. includes() checks for value equality, not a predicate."
+  },
+  {
+    "id": "js-012",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What does the `??` (nullish coalescing) operator return?",
+    "options": [
+      { "id": "a", "text": "Right side if left is falsy (0, '', false, null, undefined)" },
+      { "id": "b", "text": "Right side only if left is null or undefined" },
+      { "id": "c", "text": "The boolean AND of both sides" },
+      { "id": "d", "text": "The first truthy value" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "?? returns the right operand only when the left is null or undefined. Unlike ||, it does NOT treat 0, '', or false as nullish."
+  },
+  {
+    "id": "js-013",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "How do you destructure the `name` property from `const user = { name: 'Alice', age: 30 }`?",
+    "options": [
+      { "id": "a", "text": "const name = user[name]" },
+      { "id": "b", "text": "const { name } = user" },
+      { "id": "c", "text": "const (name) = user" },
+      { "id": "d", "text": "const name = user->name" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Object destructuring: const { name } = user extracts the name property into a variable. You can also rename: const { name: userName } = user."
+  },
+  {
+    "id": "js-014",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What does `[] + []` evaluate to?",
+    "options": [
+      { "id": "a", "text": "[]" },
+      { "id": "b", "text": "0" },
+      { "id": "c", "text": "\"\"" },
+      { "id": "d", "text": "NaN" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "[] + [] coerces both arrays to strings (empty string \"\"), then concatenates them, yielding \"\". JavaScript's + operator calls toString() on objects."
+  },
+  {
+    "id": "js-015",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "Which syntax defines an arrow function that immediately returns an object literal?",
+    "options": [
+      { "id": "a", "text": "const fn = () => { id: 1 }" },
+      { "id": "b", "text": "const fn = () => ({ id: 1 })" },
+      { "id": "c", "text": "const fn = => { id: 1 }" },
+      { "id": "d", "text": "const fn = () -> { id: 1 }" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Wrap object literals in parentheses: () => ({ id: 1 }). Without parens, the braces are interpreted as a function body, not an object."
+  },
+  {
+    "id": "js-016",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What does `Promise.all([p1, p2, p3])` do when one of the promises rejects?",
+    "options": [
+      { "id": "a", "text": "Waits for all promises to settle, returns an array of results" },
+      { "id": "b", "text": "Rejects immediately with the first rejection reason" },
+      { "id": "c", "text": "Ignores the rejection and resolves with the successful ones" },
+      { "id": "d", "text": "Retries the rejected promise" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Promise.all() fails fast — it rejects as soon as any one promise rejects. Use Promise.allSettled() if you want all results regardless of failures."
+  },
+  {
+    "id": "js-017",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What is a closure in JavaScript?",
+    "options": [
+      { "id": "a", "text": "A function that has no parameters" },
+      { "id": "b", "text": "A function that captures variables from its outer scope" },
+      { "id": "c", "text": "A function that is immediately invoked" },
+      { "id": "d", "text": "A function that returns another function" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "A closure is a function that \"closes over\" variables from its surrounding lexical scope. The inner function retains access to those variables even after the outer function returns."
+  },
+  {
+    "id": "js-018",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What does `'hello'.split('')` return?",
+    "options": [
+      { "id": "a", "text": "'hello'" },
+      { "id": "b", "text": "['hello']" },
+      { "id": "c", "text": "['h', 'e', 'l', 'l', 'o']" },
+      { "id": "d", "text": "5" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "split('') splits on every character, returning an array of individual characters. split(' ') splits on spaces. split() without args returns ['hello']."
+  },
+  {
+    "id": "js-019",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What is the purpose of `async`/`await`?",
+    "options": [
+      { "id": "a", "text": "To run code in parallel threads" },
+      { "id": "b", "text": "To write asynchronous code in a synchronous style" },
+      { "id": "c", "text": "To prevent the event loop from blocking" },
+      { "id": "d", "text": "To declare a function as non-blocking" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "async/await is syntactic sugar over Promises. It lets you write async code that reads top-to-bottom like synchronous code without .then() chains."
+  },
+  {
+    "id": "js-020",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What does `Object.freeze(obj)` prevent?",
+    "options": [
+      { "id": "a", "text": "Reading any properties" },
+      { "id": "b", "text": "Adding, deleting, or modifying existing properties" },
+      { "id": "c", "text": "Only adding new properties" },
+      { "id": "d", "text": "Passing the object to functions" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Object.freeze() makes an object immutable at the top level — no adding, deleting, or changing properties. It's shallow: nested objects are not frozen."
+  },
+  {
+    "id": "js-021",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "Which array method returns the first element that satisfies the condition?",
+    "options": [
+      { "id": "a", "text": "filter()" },
+      { "id": "b", "text": "findIndex()" },
+      { "id": "c", "text": "find()" },
+      { "id": "d", "text": "indexOf()" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "find() returns the first element where the callback returns true, or undefined if none match. filter() returns all matching elements as a new array."
+  },
+  {
+    "id": "js-022",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What does `console.log(0.1 + 0.2 === 0.3)` output?",
+    "options": [
+      { "id": "a", "text": "true" },
+      { "id": "b", "text": "false" },
+      { "id": "c", "text": "NaN" },
+      { "id": "d", "text": "undefined" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "false — floating point arithmetic is imprecise. 0.1 + 0.2 = 0.30000000000000004. Use Number.EPSILON for safe comparisons: Math.abs(a - b) < Number.EPSILON."
+  },
+  {
+    "id": "js-023",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What is the event loop's role in JavaScript?",
+    "options": [
+      { "id": "a", "text": "It runs multiple threads simultaneously" },
+      { "id": "b", "text": "It picks tasks from queues and pushes them onto the call stack" },
+      { "id": "c", "text": "It compiles JavaScript to machine code" },
+      { "id": "d", "text": "It manages memory allocation" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "The event loop monitors the call stack and task queues. When the stack is empty, it pushes pending microtasks (Promises) first, then macrotasks (setTimeout, I/O)."
+  },
+  {
+    "id": "js-024",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "How do you merge two arrays `a` and `b` into a new array?",
+    "options": [
+      { "id": "a", "text": "a.push(b)" },
+      { "id": "b", "text": "a + b" },
+      { "id": "c", "text": "[...a, ...b]" },
+      { "id": "d", "text": "a.merge(b)" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Spread syntax [...a, ...b] creates a new array with all elements from both. a.concat(b) also works. a.push(b) would push the whole array as a single element."
+  },
+  {
+    "id": "js-025",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What is the difference between `==` and `===` in JavaScript?",
+    "options": [
+      { "id": "a", "text": "No difference — they work the same" },
+      { "id": "b", "text": "=== is only for numbers, == works for all types" },
+      { "id": "c", "text": "== performs type coercion, === checks type and value" },
+      { "id": "d", "text": "=== is 3x faster than ==" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "== allows type coercion (1 == '1' is true). === (strict equality) requires same type and value (1 === '1' is false). Always prefer === to avoid coercion surprises."
+  },
+  {
+    "id": "js-026",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What does `?.` (optional chaining) do?",
+    "options": [
+      { "id": "a", "text": "Throws if the property is null" },
+      { "id": "b", "text": "Returns undefined instead of throwing when accessing a null/undefined property" },
+      { "id": "c", "text": "Assigns a default value" },
+      { "id": "d", "text": "Makes a property optional in TypeScript only" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "a?.b returns undefined (instead of throwing) when a is null or undefined. Chainable: user?.address?.city safely traverses nested properties."
+  },
+  {
+    "id": "js-027",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "Which built-in creates a deep clone of a value including nested objects?",
+    "options": [
+      { "id": "a", "text": "Object.assign({}, obj)" },
+      { "id": "b", "text": "JSON.parse(JSON.stringify(obj))" },
+      { "id": "c", "text": "structuredClone(obj)" },
+      { "id": "d", "text": "{ ...obj }" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "structuredClone() (introduced 2022) is the native deep clone API. JSON.parse/stringify works too but loses functions, Dates become strings, and undefined is dropped."
+  },
+  {
+    "id": "js-028",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "How do you remove duplicates from an array `arr`?",
+    "options": [
+      { "id": "a", "text": "arr.unique()" },
+      { "id": "b", "text": "[...new Set(arr)]" },
+      { "id": "c", "text": "arr.filter(x => x)" },
+      { "id": "d", "text": "arr.dedupe()" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Set stores only unique values. Spreading it back into an array gives a deduped copy. [...new Set(arr)] is the idiomatic one-liner."
+  },
+  {
+    "id": "js-029",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What does `Symbol()` return?",
+    "options": [
+      { "id": "a", "text": "A string with a unique value" },
+      { "id": "b", "text": "A unique, immutable primitive value" },
+      { "id": "c", "text": "An integer ID" },
+      { "id": "d", "text": "An object" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Symbol() creates a guaranteed-unique primitive. No two symbols are equal: Symbol() === Symbol() is false. Used for private object keys that avoid name collisions."
+  },
+  {
+    "id": "js-030",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What is the output of `typeof undefined`?",
+    "options": [
+      { "id": "a", "text": "\"null\"" },
+      { "id": "b", "text": "\"object\"" },
+      { "id": "c", "text": "\"undefined\"" },
+      { "id": "d", "text": "undefined" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "typeof undefined returns the string \"undefined\". Unlike typeof null (which returns \"object\"), typeof correctly identifies undefined values."
+  },
+  {
+    "id": "js-031",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "Which method joins all array elements into a string?",
+    "options": [
+      { "id": "a", "text": "concat()" },
+      { "id": "b", "text": "toString()" },
+      { "id": "c", "text": "join()" },
+      { "id": "d", "text": "combine()" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "join(separator) joins all array elements into a string, separated by the given separator. join() without args uses a comma. ['a','b'].join('-') returns 'a-b'."
+  },
+  {
+    "id": "js-032",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What is prototype chain lookup?",
+    "options": [
+      { "id": "a", "text": "How JavaScript finds a method by walking up the prototype chain if not found on the object itself" },
+      { "id": "b", "text": "How imports are resolved in Node.js" },
+      { "id": "c", "text": "How promises are linked in a chain" },
+      { "id": "d", "text": "A linked list data structure" }
+    ],
+    "correctOptionId": "a",
+    "explanation": "When you access obj.method, JS first looks on obj, then on obj.__proto__, then its __proto__, until null. This is prototype chain lookup — the foundation of JS inheritance."
+  },
+  {
+    "id": "js-033",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What does `Array.from('abc')` return?",
+    "options": [
+      { "id": "a", "text": "['abc']" },
+      { "id": "b", "text": "['a', 'b', 'c']" },
+      { "id": "c", "text": "3" },
+      { "id": "d", "text": "\"abc\"" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Array.from() creates an array from any iterable or array-like. Strings are iterable, so 'abc' becomes ['a','b','c']. Equivalent to [... 'abc']."
+  },
+  {
+    "id": "js-034",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What is `NaN === NaN` in JavaScript?",
+    "options": [
+      { "id": "a", "text": "true" },
+      { "id": "b", "text": "false" },
+      { "id": "c", "text": "undefined" },
+      { "id": "d", "text": "Throws a TypeError" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "NaN is the only value in JavaScript not equal to itself. Use Number.isNaN(val) to reliably check for NaN, not === NaN."
+  },
+  {
+    "id": "js-035",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "How do you handle an error thrown inside an `async` function?",
+    "options": [
+      { "id": "a", "text": "try { } catch (e) { } around the await expression" },
+      { "id": "b", "text": "onError() handler on the async function" },
+      { "id": "c", "text": "async functions cannot throw" },
+      { "id": "d", "text": "Using process.on('error')" }
+    ],
+    "correctOptionId": "a",
+    "explanation": "Wrap await calls in try/catch. Alternatively, attach .catch() on the returned Promise. Both patterns work because async functions always return Promises."
+  },
+  {
+    "id": "js-036",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What is the difference between `Map` and a plain object `{}`?",
+    "options": [
+      { "id": "a", "text": "No difference — they store the same data" },
+      { "id": "b", "text": "Map maintains insertion order, allows any type as key, and has a .size property" },
+      { "id": "c", "text": "Map is faster for all operations" },
+      { "id": "d", "text": "Object keys can only be strings; Map keys must be numbers" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Map keys can be any type (objects, functions), it guarantees insertion-order iteration, and has .size. Plain objects coerce all keys to strings and inherit prototype properties."
+  },
+  {
+    "id": "js-037",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What does `'abc'.includes('b')` return?",
+    "options": [
+      { "id": "a", "text": "1" },
+      { "id": "b", "text": "false" },
+      { "id": "c", "text": "true" },
+      { "id": "d", "text": "\"b\"" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "String.includes() returns a boolean — true if the substring is found anywhere in the string. It's cleaner than using .indexOf() !== -1."
+  },
+  {
+    "id": "js-038",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What does the `...rest` syntax do in function parameters?",
+    "options": [
+      { "id": "a", "text": "Spreads an array into arguments" },
+      { "id": "b", "text": "Collects remaining arguments into an array" },
+      { "id": "c", "text": "Makes parameters optional" },
+      { "id": "d", "text": "Copies the function signature" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Rest parameters (...rest) collect all remaining arguments after the named ones into a real array. Unlike arguments, rest is a proper Array with map/filter/etc."
+  },
+  {
+    "id": "js-039",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "When does a `WeakMap` garbage-collect its entries?",
+    "options": [
+      { "id": "a", "text": "Never — entries persist until explicitly deleted" },
+      { "id": "b", "text": "When the key object has no other references and is garbage-collected" },
+      { "id": "c", "text": "After 24 hours" },
+      { "id": "d", "text": "When the WeakMap goes out of scope" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "WeakMap holds weak references to its keys. When a key object has no other strong references, the GC can collect it — and the WeakMap entry disappears too. Useful for caches without memory leaks."
+  },
+  {
+    "id": "js-040",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What is the output of `Boolean('')`, `Boolean(0)`, and `Boolean('0')`?",
+    "options": [
+      { "id": "a", "text": "false, false, false" },
+      { "id": "b", "text": "false, false, true" },
+      { "id": "c", "text": "true, false, true" },
+      { "id": "d", "text": "false, true, false" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "'' and 0 are falsy. '0' is a non-empty string, so it is truthy — Boolean('0') is true. The only falsy string in JS is the empty string ''."
+  },
+  {
+    "id": "js-041",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "How do you convert any value to a boolean?",
+    "options": [
+      { "id": "a", "text": "value.toBool()" },
+      { "id": "b", "text": "!!value" },
+      { "id": "c", "text": "Boolean.from(value)" },
+      { "id": "d", "text": "value === true" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "!! applies logical NOT twice: the first ! converts to boolean and negates, the second negates again. Boolean(value) is the explicit equivalent."
+  },
+  {
+    "id": "js-042",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What does `Object.keys(obj)` return?",
+    "options": [
+      { "id": "a", "text": "All keys including inherited ones" },
+      { "id": "b", "text": "An array of the object's own enumerable string keys" },
+      { "id": "c", "text": "An array of values" },
+      { "id": "d", "text": "A Set of keys" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Object.keys() returns only own enumerable string property keys. Use Object.getOwnPropertyNames() to include non-enumerable ones, or for...in to include inherited keys."
+  },
+  {
+    "id": "js-043",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What is `generator` function syntax and what does `yield` do?",
+    "options": [
+      { "id": "a", "text": "async function* — yield resolves a promise" },
+      { "id": "b", "text": "function* — yield pauses execution and produces a value" },
+      { "id": "c", "text": "function — yield is an alias for return" },
+      { "id": "d", "text": "function* — yield throws an error" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Generator functions use function*. yield pauses the function, produces a value, and resumes on the next .next() call. Used for lazy sequences and iterators."
+  },
+  {
+    "id": "js-044",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "Which method checks if a string starts with a given substring?",
+    "options": [
+      { "id": "a", "text": "str.beginsWith()" },
+      { "id": "b", "text": "str.startsWith()" },
+      { "id": "c", "text": "str.indexOf() === 0" },
+      { "id": "d", "text": "str.first()" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "String.startsWith(str, position) returns true if the string starts with the given substring. It also accepts an optional start position as the second argument."
+  },
+  {
+    "id": "js-045",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What is `event.preventDefault()` used for?",
+    "options": [
+      { "id": "a", "text": "Stops the event from bubbling up the DOM" },
+      { "id": "b", "text": "Prevents the browser's default action for an event" },
+      { "id": "c", "text": "Removes the event listener" },
+      { "id": "d", "text": "Delays the event handler" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "preventDefault() stops the browser's built-in action — e.g., stopping a form submit from reloading the page, or a link from navigating. It doesn't stop event propagation; use stopPropagation() for that."
+  },
+  {
+    "id": "js-046",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What does `Proxy` allow you to do?",
+    "options": [
+      { "id": "a", "text": "Cache function results" },
+      { "id": "b", "text": "Intercept and redefine fundamental operations on objects" },
+      { "id": "c", "text": "Create immutable objects" },
+      { "id": "d", "text": "Serialize objects to JSON" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Proxy wraps an object and intercepts operations like get, set, has, delete via handler traps. Used in Vue's reactivity system and validation libraries."
+  },
+  {
+    "id": "js-047",
+    "language": "javascript",
+    "difficulty": "easy",
+    "prompt": "What does `Array.prototype.flat()` do?",
+    "options": [
+      { "id": "a", "text": "Sorts the array" },
+      { "id": "b", "text": "Creates a new array with all sub-array elements concatenated" },
+      { "id": "c", "text": "Removes falsy values" },
+      { "id": "d", "text": "Converts the array to a string" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "flat() flattens nested arrays by one level by default. flat(Infinity) flattens all levels. [1, [2, [3]]].flat() returns [1, 2, [3]]."
+  },
+  {
+    "id": "js-048",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "What is the output of `typeof class Foo {}`?",
+    "options": [
+      { "id": "a", "text": "\"class\"" },
+      { "id": "b", "text": "\"object\"" },
+      { "id": "c", "text": "\"function\"" },
+      { "id": "d", "text": "\"undefined\"" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "Classes in JavaScript are syntactic sugar over constructor functions. typeof returns \"function\" for classes, because that is what they ultimately are."
+  },
+  {
+    "id": "js-049",
+    "language": "javascript",
+    "difficulty": "hard",
+    "prompt": "What does `Object.defineProperty(obj, 'key', { writable: false })` do?",
+    "options": [
+      { "id": "a", "text": "Hides the property from console.log" },
+      { "id": "b", "text": "Makes the property read-only — assignment is silently ignored (or throws in strict mode)" },
+      { "id": "c", "text": "Deletes the property" },
+      { "id": "d", "text": "Makes the property non-enumerable" }
+    ],
+    "correctOptionId": "b",
+    "explanation": "Setting writable: false makes the property read-only. In strict mode, attempting to assign to it throws a TypeError. In non-strict mode, the assignment silently fails."
+  },
+  {
+    "id": "js-050",
+    "language": "javascript",
+    "difficulty": "medium",
+    "prompt": "Which logical assignment operator assigns `b` to `a` only if `a` is nullish?",
+    "options": [
+      { "id": "a", "text": "a ||= b" },
+      { "id": "b", "text": "a &&= b" },
+      { "id": "c", "text": "a ??= b" },
+      { "id": "d", "text": "a ??= b || c" }
+    ],
+    "correctOptionId": "c",
+    "explanation": "a ??= b assigns b to a only when a is null or undefined. a ||= b assigns when a is falsy (which includes 0, ''). a &&= b assigns only when a is truthy."
+  }
+]

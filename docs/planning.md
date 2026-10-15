@@ -122,6 +122,88 @@ End screen: today's score, tokens earned, streak count, any badges unlocked
 
 ---
 
+## Design Direction
+
+### Visual Style
+
+Dark, developer-coded aesthetic. Dark background (#0a0a0a → #111) with a bright accent. Not childish (this isn't Duolingo for kids), not corporate (this isn't LeetCode). Think VS Code meets a mobile game. Developers will feel at home immediately.
+
+### Color System
+
+| Token | Value | Use |
+|---|---|---|
+| Background | zinc-950 / zinc-900 | Page bg / section bg |
+| Cards | zinc-900 / zinc-800 | Card surfaces |
+| Accent | violet-500 | Primary CTA, active states |
+| Correct | emerald-500 | Correct answer feedback |
+| Wrong | rose-500 | Wrong answer feedback |
+| Streak/fire | amber-500 | Streak flame indicator |
+| Tokens | yellow-400 | Token count display |
+
+### Mobile-First Rules (non-negotiable)
+
+| Rule | Reason |
+|---|---|
+| Min tap target 48×48px | Android/iOS HIG guideline |
+| viewport-fit=cover + env(safe-area-inset-bottom) | PWA on iPhone notch/home indicator |
+| All primary actions pinned to the bottom | Thumb reach zone |
+| Max content width max-w-md (448px) centred on tablet/desktop | Feels native on phone, clean on larger screens |
+| No hover-only states | Touch devices have no hover |
+
+### Quiz Page Layout
+
+```
+┌──────────────────────┐
+│ ←   🔥 12   💰 340   │  top bar
+│ ████████░░░░  Q3/5   │  progress bar
+│                      │
+│  javascript · medium │  language + difficulty badge
+│                      │
+│  What does           │
+│  `typeof null`       │  question — large, readable
+│  return?             │
+│                      │
+│ ┌──────────────────┐ │
+│ │ A  "null"        │ │  answer cards — full width
+│ ├──────────────────┤ │  min 64px tall
+│ │ B  "undefined"   │ │
+│ ├──────────────────┤ │
+│ │ C  "object"      │ │
+│ ├──────────────────┤ │
+│ │ D  "boolean"     │ │
+│ └──────────────────┘ │
+│                      │
+│ [ Check Answer ]     │  pinned CTA — disabled until selection
+│ ▓▓▓▓safe area▓▓▓▓▓  │
+└──────────────────────┘
+```
+
+After answering — feedback slides up from bottom (Duolingo pattern):
+```
+│ ✓ Correct! +10 🪙    │  green or red panel slides up
+│ typeof null === ...  │  explanation — concise
+│ [ Next →           ] │
+```
+
+### Results Page Layout
+
+```
+│ 🎉 Day Complete!     │
+│ 4 / 5 correct        │
+│ +70 tokens earned    │  (correct + bonus + streak)
+│ 🔥 7-day streak!     │
+│ [badge unlock anim]  │
+│ [ Leaderboard ]      │
+│ [ Come back tmrw ]   │
+```
+
+### UI Libraries
+
+- **shadcn/ui** — Button, Card, Badge, Progress, Avatar, Separator (Tailwind v4 compatible)
+- **No animation library** — CSS transitions + Tailwind animate- utilities only (keeps bundle small for slow mobile data)
+
+---
+
 ## Tech Stack
 
 | Layer | Choice | Reason |
