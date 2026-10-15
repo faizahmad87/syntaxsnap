@@ -32,7 +32,7 @@ export function BottomNav() {
               key={href}
               href={href}
               className={cn(
-                "flex-1 flex flex-col items-center gap-1 py-3 min-h-[48px] text-xs font-medium transition-colors",
+                "flex-1 flex flex-col items-center gap-1 py-3 min-h-[48px] text-xs font-medium transition-colors cursor-pointer",
                 isActive ? "text-primary" : "text-muted-foreground",
               )}
             >

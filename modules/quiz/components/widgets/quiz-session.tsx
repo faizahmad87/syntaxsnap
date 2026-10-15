@@ -59,6 +59,11 @@ export function QuizSession({
     setTokenBalance((prev) => prev + answerResult.tokensEarned)
   }, [selectedId, isSubmitting, result, currentQuestion, language, submit])
 
+  const handleBack = useCallback(async () => {
+    await fetch(`/api/session?language=${language}`, { method: "DELETE" })
+    router.push("/")
+  }, [language, router])
+
   const handleNext = useCallback(() => {
     if (isLastQuestion) {
       const totalTokensEarned = sessionResults.reduce((s, r) => s + r.tokensEarned, 0)
@@ -95,6 +100,7 @@ export function QuizSession({
       {/* Top bar */}
       <SessionHeader
         backHref="/"
+        onBack={handleBack}
         streakCount={initialStreak}
         tokenBalance={tokenBalance}
       />

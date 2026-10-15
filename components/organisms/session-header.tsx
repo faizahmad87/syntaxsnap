@@ -6,20 +6,31 @@ import { TokenCounter } from "@/components/molecules/token-counter"
 
 interface SessionHeaderProps {
   backHref: string
+  onBack?: () => void
   streakCount: number
   tokenBalance: number
 }
 
-export function SessionHeader({ backHref, streakCount, tokenBalance }: SessionHeaderProps) {
+export function SessionHeader({ backHref, onBack, streakCount, tokenBalance }: SessionHeaderProps) {
   return (
     <header className="flex items-center justify-between py-4 px-4">
-      <Link
-        href={backHref}
-        className="w-10 h-10 flex items-center justify-center rounded-xl border border-border bg-secondary text-muted-foreground transition-colors"
-        aria-label="Back"
-      >
-        <ArrowLeft className="w-4 h-4" />
-      </Link>
+      {onBack ? (
+        <button
+          onClick={onBack}
+          className="w-10 h-10 flex items-center justify-center rounded-xl border border-border bg-secondary text-muted-foreground transition-colors cursor-pointer"
+          aria-label="Back"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+      ) : (
+        <Link
+          href={backHref}
+          className="w-10 h-10 flex items-center justify-center rounded-xl border border-border bg-secondary text-muted-foreground transition-colors cursor-pointer"
+          aria-label="Back"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </Link>
+      )}
 
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-1.5 text-sm font-semibold">

@@ -12,17 +12,17 @@ interface HomeClientProps {
   completedLanguages: Language[]
 }
 
-const LANGUAGES: Array<{ id: Language; label: string; icon: string; description: string }> = [
+const LANGUAGES: Array<{ id: Language; label: string; logo: string; description: string }> = [
   {
     id: "javascript",
     label: "JavaScript",
-    icon: "🟨",
+    logo: "/js_logo.png",
     description: "Arrays, closures, async/await",
   },
   {
     id: "python",
     label: "Python",
-    icon: "🐍",
+    logo: "/python_logo.png",
     description: "List comprehensions, decorators, typing",
   },
 ]
@@ -126,10 +126,13 @@ export function HomeClient({
                     "group relative rounded-2xl border p-5 text-left transition-all active:scale-[0.98]",
                     done
                       ? "border-success/30 bg-success/5 cursor-default opacity-70"
-                      : "border-border/50 bg-card hover:border-primary/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                      : "cursor-pointer border-border/50 bg-card hover:border-primary/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   )}
                 >
-                  <div className="text-3xl mb-3">{lang.icon}</div>
+                  <div className="mb-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={lang.logo} alt={lang.label} width={40} height={40} className="rounded-lg" />
+                  </div>
                   <div className="font-semibold text-sm">{lang.label}</div>
                   <div className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                     {lang.description}
