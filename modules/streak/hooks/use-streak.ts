@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { streakService } from "../services/streak-service"
+import { apiClient } from "@/lib/api-client"
 import type { Streak } from "../types/streak"
+import type { StreakResponse } from "../types/responses"
 
 interface UseStreakResult {
   streak: Streak | null
@@ -23,7 +24,7 @@ export function useStreak(): UseStreakResult {
     try {
       setIsFetching(true)
       setError(null)
-      const response = await streakService.getStreak()
+      const response = await apiClient<StreakResponse>("/api/streak")
       setStreak(response.data)
     } catch (err) {
       setError(
@@ -38,7 +39,7 @@ export function useStreak(): UseStreakResult {
     try {
       setIsUsingFreeze(true)
       setError(null)
-      const response = await streakService.useFreeze()
+      const response = await apiClient<StreakResponse>("/api/streak/freeze", { method: "POST" })
       setStreak(response.data)
     } catch (err) {
       setError(

@@ -19,6 +19,7 @@ interface QuizSessionProps {
   language: Language
   initialStreak: number
   initialTokens: number
+  initialIndex?: number
 }
 
 export function QuizSession({
@@ -26,11 +27,12 @@ export function QuizSession({
   language,
   initialStreak,
   initialTokens,
+  initialIndex = 0,
 }: QuizSessionProps) {
   const router = useRouter()
   const { submit, isSubmitting } = useSubmitAnswer()
 
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(initialIndex)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [result, setResult] = useState<AnswerResult | null>(null)
   const [sessionResults, setSessionResults] = useState<AnswerResult[]>([])
@@ -81,7 +83,7 @@ export function QuizSession({
     (optionId: string): OptionState => {
       if (!result) {
         if (optionId === selectedId) return "selected"
-        return selectedId ? "disabled" : "idle"
+        return "idle"
       }
       if (optionId === result.correctOptionId) return "correct"
       if (optionId === result.selectedOptionId && !result.isCorrect) return "incorrect"
@@ -119,7 +121,7 @@ export function QuizSession({
               option={option}
               index={i}
               state={getOptionState(option.id)}
-              onClick={() => !result && setSelectedId(option.id)}
+              onClick={() => !result && setSelectedId((prev) => prev === option.id ? null : option.id)}
             />
           ))}
         </div>
@@ -130,7 +132,7 @@ export function QuizSession({
         {result ? (
           <WhyCard result={result} isLast={isLastQuestion} onNext={handleNext} />
         ) : (
-          <div className="border-t border-border bg-background px-4 py-4 safe-bottom">
+          <div className="border-t border-border bg-background px-4 pt-4 pb-action">
             <Button
               onClick={handleCheck}
               disabled={!selectedId || isSubmitting}

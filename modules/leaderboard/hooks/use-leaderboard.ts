@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { leaderboardService } from "../services/leaderboard-service"
+import { apiClient } from "@/lib/api-client"
 import type { Leaderboard, LeaderboardPeriod } from "../types/leaderboard"
+import type { LeaderboardResponse } from "../types/responses"
 
 interface UseLeaderboardOptions {
   period?: LeaderboardPeriod
@@ -28,7 +29,8 @@ export function useLeaderboard({
     try {
       setIsFetching(true)
       setError(null)
-      const response = await leaderboardService.getLeaderboard({ period, limit })
+      const params = new URLSearchParams({ period, limit: String(limit) })
+      const response = await apiClient<LeaderboardResponse>(`/api/leaderboard?${params}`)
       setLeaderboard(response.data)
     } catch (err) {
       setError(

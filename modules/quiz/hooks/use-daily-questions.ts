@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { quizService } from "../services/quiz-service"
+import { apiClient } from "@/lib/api-client"
 import type { QuizQuestion } from "../types/question"
+import type { QuestionsResponse } from "../types/responses"
 import type { LanguageInput } from "../types/schemas"
 
 interface UseDailyQuestionsOptions {
@@ -12,6 +13,7 @@ interface UseDailyQuestionsOptions {
 
 interface UseDailyQuestionsResult {
   questions: QuizQuestion[]
+  answeredCount: number
   isFetching: boolean
   error: Error | null
   refetch: () => Promise<void>
@@ -22,6 +24,7 @@ export function useDailyQuestions({
   shouldFetch = true,
 }: UseDailyQuestionsOptions): UseDailyQuestionsResult {
   const [questions, setQuestions] = useState<QuizQuestion[]>([])
+  const [answeredCount, setAnsweredCount] = useState(0)
   const [isFetching, setIsFetching] = useState(shouldFetch)
   const [error, setError] = useState<Error | null>(null)
 
@@ -29,8 +32,9 @@ export function useDailyQuestions({
     try {
       setIsFetching(true)
       setError(null)
-      const response = await quizService.getDailyQuestions(language)
-      setQuestions(response.data)
+      const response = await apiClient<QuestionsResponse>(`/api/questions?language=${language}`)
+      setQuestions(response.data.questions)
+      setAnsweredCount(response.data.answeredCount)
     } catch (err) {
       setError(
         err instanceof Error ? err : new Error("Failed to fetch questions"),
@@ -46,5 +50,5 @@ export function useDailyQuestions({
     }
   }, [language, shouldFetch])
 
-  return { questions, isFetching, error, refetch: fetchQuestions }
+  return { questions, answeredCount, isFetching, error, refetch: fetchQuestions }
 }

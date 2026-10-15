@@ -1,4 +1,3 @@
-export { quizService } from "./services/quiz-service"
 export { useDailyQuestions } from "./hooks/use-daily-questions"
 export { useSubmitAnswer } from "./hooks/use-submit-answer"
 export type {

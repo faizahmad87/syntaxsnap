@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { rewardsService } from "../services/rewards-service"
+import { apiClient } from "@/lib/api-client"
 import type { UserRewards } from "../types/reward"
+import type { UserRewardsResponse } from "../types/responses"
 
 interface UseRewardsResult {
   rewards: UserRewards | null
@@ -20,7 +21,7 @@ export function useRewards(): UseRewardsResult {
     try {
       setIsFetching(true)
       setError(null)
-      const response = await rewardsService.getUserRewards()
+      const response = await apiClient<UserRewardsResponse>("/api/rewards")
       setRewards(response.data)
     } catch (err) {
       setError(

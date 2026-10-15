@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { quizService } from "../services/quiz-service"
+import { apiClient } from "@/lib/api-client"
 import type { AnswerResult } from "../types/question"
+import type { AnswerResponse } from "../types/responses"
 import type { SubmitAnswerInput } from "../types/schemas"
 
 interface UseSubmitAnswerResult {
@@ -19,7 +20,10 @@ export function useSubmitAnswer(): UseSubmitAnswerResult {
     try {
       setIsSubmitting(true)
       setError(null)
-      const response = await quizService.submitAnswer(data)
+      const response = await apiClient<AnswerResponse>("/api/answers", {
+        method: "POST",
+        body: JSON.stringify(data),
+      })
       return response.data
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to submit answer"

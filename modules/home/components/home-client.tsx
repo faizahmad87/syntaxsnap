@@ -1,39 +1,35 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Flame, Trophy, Zap, CheckCircle2 } from "lucide-react"
+import { Flame, Trophy, Zap, CheckCircle2, PlayCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useHomeData } from "../hooks/use-home-data"
 import type { Language } from "@/modules/quiz/types/question"
 
-interface HomeClientProps {
-  currentStreak: number
-  longestStreak: number
-  isActiveToday: boolean
-  completedLanguages: Language[]
-}
-
-const LANGUAGES: Array<{ id: Language; label: string; icon: string; description: string }> = [
+const LANGUAGES: Array<{ id: Language; label: string; logo: string; description: string }> = [
   {
     id: "javascript",
     label: "JavaScript",
-    icon: "🟨",
+    logo: "/languages/javascript.png",
     description: "Arrays, closures, async/await",
   },
   {
     id: "python",
     label: "Python",
-    icon: "🐍",
+    logo: "/languages/python.png",
     description: "List comprehensions, decorators, typing",
   },
 ]
 
-export function HomeClient({
-  currentStreak,
-  longestStreak,
-  isActiveToday,
-  completedLanguages,
-}: HomeClientProps) {
+export function HomeClient() {
   const router = useRouter()
+  const { data, isFetching } = useHomeData()
+
+  const completedLanguages = data?.completedLanguages ?? []
+  const sessionProgress = data?.sessionProgress ?? {}
+  const currentStreak = data?.currentStreak ?? 0
+  const longestStreak = data?.longestStreak ?? 0
+  const isActiveToday = data?.isActiveToday ?? false
   const allDone = LANGUAGES.every((l) => completedLanguages.includes(l.id))
 
   const handleStart = (language: Language) => {
@@ -80,10 +76,16 @@ export function HomeClient({
             </div>
             <div>
               <p className="text-2xl font-bold leading-none">
-                {currentStreak}
-                <span className="text-base font-normal text-muted-foreground ml-1">
-                  day streak
-                </span>
+                {isFetching ? (
+                  <span className="inline-block w-8 h-6 rounded bg-muted animate-pulse" />
+                ) : (
+                  <>
+                    {currentStreak}
+                    <span className="text-base font-normal text-muted-foreground ml-1">
+                      day streak
+                    </span>
+                  </>
+                )}
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {isActiveToday ? "Today complete ✓" : "Practice to extend streak"}
@@ -95,13 +97,19 @@ export function HomeClient({
               <Trophy className="w-3.5 h-3.5" />
               <span className="text-xs">Best</span>
             </div>
-            <p className="text-lg font-semibold">{longestStreak}</p>
+            <p className="text-lg font-semibold">
+              {isFetching ? (
+                <span className="inline-block w-6 h-5 rounded bg-muted animate-pulse" />
+              ) : (
+                longestStreak
+              )}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Language picker or all-done state */}
-      {allDone ? (
+      {!isFetching && allDone ? (
         <div className="rounded-2xl border border-border/50 bg-card p-6 mb-6 text-center">
           <p className="text-3xl mb-3">🎉</p>
           <p className="font-semibold">All done for today!</p>
@@ -117,26 +125,46 @@ export function HomeClient({
           <div className="grid grid-cols-2 gap-3">
             {LANGUAGES.map((lang) => {
               const done = completedLanguages.includes(lang.id)
+              const progress = sessionProgress[lang.id]
+              const inProgress = !done && !!progress
+
               return (
                 <button
                   key={lang.id}
                   onClick={() => !done && handleStart(lang.id)}
-                  disabled={done}
+                  disabled={done || isFetching}
                   className={cn(
                     "group relative rounded-2xl border p-5 text-left transition-all active:scale-[0.98]",
                     done
                       ? "border-success/30 bg-success/5 cursor-default opacity-70"
-                      : "border-border/50 bg-card hover:border-primary/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                      : isFetching
+                        ? "cursor-default"
+                        : inProgress
+                          ? "cursor-pointer border-primary/50 bg-primary/5 hover:border-primary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          : "cursor-pointer border-border/50 bg-card hover:border-primary/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   )}
                 >
-                  <div className="text-3xl mb-3">{lang.icon}</div>
+                  <img src={lang.logo} alt={lang.label} width={36} height={36} className="mb-3 object-contain" />
                   <div className="font-semibold text-sm">{lang.label}</div>
                   <div className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                     {lang.description}
                   </div>
+
+                  {/* Status badge bottom-left */}
+                  {inProgress && (
+                    <div className="mt-3 flex items-center gap-1.5">
+                      <span className="text-xs font-medium text-primary bg-primary/10 rounded-full px-2 py-0.5">
+                        {progress.answered} / {progress.total}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Top-right icon */}
                   <div className="absolute top-3 right-3">
                     {done ? (
                       <CheckCircle2 className="w-4 h-4 text-success" />
+                    ) : inProgress ? (
+                      <PlayCircle className="w-4 h-4 text-primary" />
                     ) : (
                       <Zap className="w-3.5 h-3.5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                     )}

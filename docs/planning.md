@@ -229,8 +229,6 @@ After answering — feedback slides up from bottom (Duolingo pattern):
 
 ## Project Structure
 
-Mirrors the toflow-ai/web-app module architecture exactly.
-
 ```
 syntaxsnap/
 ├── docs/
@@ -243,25 +241,43 @@ syntaxsnap/
 │   │   └── layout.tsx
 │   ├── (protected)/
 │   │   ├── quiz/
-│   │   │   └── page.tsx                 ← daily quiz session
+│   │   │   └── page.tsx                 ← validates lang param, renders QuizClient
 │   │   ├── results/
-│   │   │   └── page.tsx                 ← end-of-session summary
+│   │   │   └── page.tsx                 ← validates search params, renders ResultsClient
 │   │   ├── leaderboard/
 │   │   │   └── page.tsx
-│   │   └── layout.tsx
+│   │   ├── profile/
+│   │   │   └── page.tsx
+│   │   └── layout.tsx                   ← handles auth for all protected routes
 │   ├── api/
+│   │   ├── home/
+│   │   │   └── route.ts
 │   │   ├── questions/
-│   │   │   └── route.ts                 ← GET today's questions
+│   │   │   └── route.ts                 ← GET today's questions + answeredCount
 │   │   ├── answers/
 │   │   │   └── route.ts                 ← POST answer, returns result
 │   │   ├── streak/
-│   │   │   └── route.ts                 ← GET/POST streak state
+│   │   │   └── route.ts
+│   │   ├── profile/
+│   │   │   └── route.ts
 │   │   └── leaderboard/
 │   │       └── route.ts
 │   ├── layout.tsx
-│   └── page.tsx                         ← onboarding / language picker
+│   └── page.tsx                         ← auth guard only, renders HomeClient
 │
 ├── modules/
+│   ├── home/
+│   │   ├── components/
+│   │   │   └── home-client.tsx          ← language picker with 3 card states
+│   │   ├── handlers/
+│   │   │   └── home-handlers.ts
+│   │   ├── hooks/
+│   │   │   └── use-home-data.ts
+│   │   ├── types/
+│   │   │   ├── home.ts
+│   │   │   └── responses.ts
+│   │   └── index.ts
+│   │
 │   ├── quiz/
 │   │   ├── components/
 │   │   │   ├── presentation/
@@ -269,18 +285,30 @@ syntaxsnap/
 │   │   │   │   ├── answer-option.tsx
 │   │   │   │   └── why-card.tsx
 │   │   │   └── widgets/
-│   │   │       └── quiz-session.tsx
+│   │   │       ├── quiz-client.tsx      ← fetches data via hooks, renders QuizSession
+│   │   │       ├── quiz-session.tsx
+│   │   │       └── results-client.tsx
 │   │   ├── handlers/
 │   │   │   └── quiz-handlers.ts
 │   │   ├── hooks/
 │   │   │   ├── use-daily-questions.ts
 │   │   │   └── use-submit-answer.ts
-│   │   ├── services/
-│   │   │   └── quiz-service.ts
 │   │   ├── types/
-│   │   │   ├── question.ts              ← Question, AnswerOption, QuizSession types
-│   │   │   ├── schemas.ts               ← Zod schemas + inferred input types
-│   │   │   └── responses.ts             ← QuestionsResponse, AnswerResponse
+│   │   │   ├── question.ts
+│   │   │   ├── schemas.ts
+│   │   │   └── responses.ts
+│   │   └── index.ts
+│   │
+│   ├── profile/
+│   │   ├── components/
+│   │   │   └── profile-client.tsx
+│   │   ├── handlers/
+│   │   │   └── profile-handlers.ts
+│   │   ├── hooks/
+│   │   │   └── use-profile.ts
+│   │   ├── types/
+│   │   │   ├── profile.ts
+│   │   │   └── responses.ts
 │   │   └── index.ts
 │   │
 │   ├── streak/
@@ -292,10 +320,8 @@ syntaxsnap/
 │   │   │   └── streak-handlers.ts
 │   │   ├── hooks/
 │   │   │   └── use-streak.ts
-│   │   ├── services/
-│   │   │   └── streak-service.ts
 │   │   ├── types/
-│   │   │   ├── streak.ts                ← Streak, StreakFreeze types
+│   │   │   ├── streak.ts
 │   │   │   ├── schemas.ts
 │   │   │   └── responses.ts
 │   │   └── index.ts
@@ -309,10 +335,8 @@ syntaxsnap/
 │   │   │   └── rewards-handlers.ts
 │   │   ├── hooks/
 │   │   │   └── use-rewards.ts
-│   │   ├── services/
-│   │   │   └── rewards-service.ts
 │   │   ├── types/
-│   │   │   ├── reward.ts                ← Token, Badge, BadgeType types
+│   │   │   ├── reward.ts
 │   │   │   ├── schemas.ts
 │   │   │   └── responses.ts
 │   │   └── index.ts
@@ -325,10 +349,8 @@ syntaxsnap/
 │       │   └── leaderboard-handlers.ts
 │       ├── hooks/
 │       │   └── use-leaderboard.ts
-│       ├── services/
-│       │   └── leaderboard-service.ts
 │       ├── types/
-│       │   ├── leaderboard.ts           ← LeaderboardEntry, LeaderboardPeriod
+│       │   ├── leaderboard.ts
 │       │   ├── schemas.ts
 │       │   └── responses.ts
 │       └── index.ts
@@ -344,30 +366,20 @@ syntaxsnap/
 │   └── index.ts
 │
 ├── lib/
-│   ├── supabase.ts                      ← Supabase client (server + client)
+│   ├── supabase.ts
 │   ├── api-client.ts                    ← typed fetch wrapper
-│   ├── date-utils.ts                    ← daily reset, UTC helpers
-│   └── utils.ts                         ← cn(), misc helpers
-│
-├── data/
-│   └── questions/
-│       ├── javascript.json
-│       └── python.json
+│   ├── date-utils.ts
+│   └── utils.ts
 │
 ├── public/
-├── .env.local
-├── .prettierrc
-├── .eslintrc.json
-├── tsconfig.json
-├── tailwind.config.ts
-├── next.config.mjs
-├── package.json
+│   └── languages/                       ← language logo PNGs
+│       ├── javascript.png
+│       └── python.png
+│
 └── README.md
 ```
 
 ## Coding Conventions (non-negotiable)
-
-Mirrors toflow-ai/web-app exactly:
 
 | Rule | Detail |
 |---|---|
@@ -378,9 +390,9 @@ Mirrors toflow-ai/web-app exactly:
 | Hook signatures | Typed `interface UseXOptions` + `interface UseXResult` |
 | File names | `kebab-case` always |
 | Component exports | `PascalCase` named exports |
-| Hooks | prefix `use-` |
-| Services | suffix `-service`, exported as const object |
+| Hooks | prefix `use-`, call `apiClient` directly — no service layer |
 | Handlers | suffix `-handlers`, pure functions returning `Promise<NextResponse>` |
+| Pages | Thin shells only — validate params + render one client component. No DB calls, no API calls |
 | Path alias | `@/*` maps to project root |
 | Prettier | no semis, 2-space indent, trailing commas, LF |
 
@@ -401,3 +413,10 @@ Mirrors toflow-ai/web-app exactly:
 - **Supabase over Prisma+PlanetScale** — free tier auth + DB in one, less setup friction for a 4–6 hour build.
 - **PWA over React Native** — no app store lag, works on low-end Android immediately, shareable via link.
 - **50 questions per language to start** — enough for 10 days without repeat. Expand with community contributions in V2.
+- **No service layer** — services were thin `apiClient` wrappers with zero logic. Removed entirely. Hooks call `apiClient` directly. Stack is: page → client component → hook → `apiClient` → API route → handler.
+- **Pages are thin shells** — all protected pages only validate params and render one client component. No DB calls, no API calls in pages. Auth is handled centrally by `(protected)/layout.tsx`.
+- **Home page never auto-redirects** — original plan redirected to quiz if an incomplete session existed. Removed: home always renders, showing card status (not started / in progress with X/5 count / completed). User always chooses which language to start.
+- **Streak marked on first answer, not session completion** — changed from marking streak after all 5 questions to marking it on the first answer of the day. Ensures streak is safe even if user closes the app mid-session.
+- **Quiz resumes at correct question on refresh** — `/api/questions` now returns `answeredCount` alongside questions. `QuizSession` initialises `currentIndex` from this value instead of always starting at 0.
+- **Answer can be changed before checking** — before submitting, all options stay `idle` (clickable). Clicking the selected option again deselects it. Lock-out only applies after "Check Answer" is tapped.
+- **Language logos instead of emojis** — real PNG logos served from `public/languages/` used in `LanguageBadge` and home language cards.

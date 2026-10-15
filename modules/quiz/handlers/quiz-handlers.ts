@@ -86,10 +86,11 @@ function computeStreakUpdate(
 
 export async function handleGetDailyQuestions(
   req: NextRequest,
-): Promise<NextResponse<ApiResponse<QuizQuestion[]>>> {
+): Promise<NextResponse<ApiResponse<{ questions: QuizQuestion[]; answeredCount: number }>>> {
+  type R = NextResponse<ApiResponse<{ questions: QuizQuestion[]; answeredCount: number }>>
   try {
     const user = await getAuthenticatedUser()
-    if (!user) return unauthorizedResponse() as NextResponse<ApiResponse<QuizQuestion[]>>
+    if (!user) return unauthorizedResponse() as R
 
     const { searchParams } = new URL(req.url)
     const { language } = dailyQuestionsQuerySchema.parse({
@@ -105,8 +106,19 @@ export async function handleGetDailyQuestions(
 
     let questionIds: string[]
 
+    if (existingSession?.completed) {
+      return NextResponse.json({ status: 200, message: "ok", data: { questions: [], answeredCount: 0 } })
+    }
+
+    let answeredCount = 0
+
     if (existingSession) {
       questionIds = existingSession.questionIds
+      const countResult = await db
+        .select({ count: sql<number>`cast(count(*) as int)` })
+        .from(answers)
+        .where(eq(answers.sessionId, existingSession.id))
+      answeredCount = countResult[0]?.count ?? 0
     } else {
       const rows = await db.execute(
         sql`SELECT question_id FROM pick_daily_questions(${user.id}::uuid, ${language}::language_type, 5)`,
@@ -116,7 +128,7 @@ export async function handleGetDailyQuestions(
       )
 
       if (questionIds.length === 0) {
-        return notFoundResponse("No questions available for this language.") as NextResponse<ApiResponse<QuizQuestion[]>>
+        return notFoundResponse("No questions available for this language.") as R
       }
 
       await db.insert(dailySessions).values({
@@ -151,9 +163,9 @@ export async function handleGetDailyQuestions(
       .map((id) => questionMap.get(id))
       .filter((q): q is QuizQuestion => q !== undefined)
 
-    return NextResponse.json({ status: 200, message: "ok", data: orderedQuestions })
+    return NextResponse.json({ status: 200, message: "ok", data: { questions: orderedQuestions, answeredCount } })
   } catch (error) {
-    return handleApiError(error) as NextResponse<ApiResponse<QuizQuestion[]>>
+    return handleApiError(error) as R
   }
 }
 
@@ -208,6 +220,7 @@ export async function handleSubmitAnswer(
     const priorAnswers = await db.query.answers.findMany({
       where: (a, { eq: e }) => e(a.sessionId, session.id),
     })
+    const isFirstAnswer = priorAnswers.length === 0
     const isLastQuestion = priorAnswers.length + 1 === session.questionIds.length
     const isAllCorrect =
       isLastQuestion &&
@@ -235,19 +248,8 @@ export async function handleSubmitAnswer(
         })
       }
 
-      if (isLastQuestion) {
-        await tx
-          .update(dailySessions)
-          .set({ completed: true, completedAt: new Date() })
-          .where(eq(dailySessions.id, session.id))
-
-        await tx.insert(tokenLedger).values({
-          userId: user.id,
-          amount: 20,
-          reason: "daily_completion_bonus",
-          sessionId: session.id,
-        })
-
+      // Mark streak on the first answer of the session
+      if (isFirstAnswer) {
         const currentStreak = await tx.query.streaks.findFirst({
           where: (s, { eq: e }) => e(s.userId, user.id),
         })
@@ -258,10 +260,12 @@ export async function handleSubmitAnswer(
             today,
           )
 
-          await tx
-            .update(streaks)
-            .set(updates)
-            .where(eq(streaks.userId, user.id))
+          if (Object.keys(updates).length > 0) {
+            await tx
+              .update(streaks)
+              .set(updates)
+              .where(eq(streaks.userId, user.id))
+          }
 
           if (bonusTokens > 0) {
             totalTokensEarned += bonusTokens
@@ -280,6 +284,20 @@ export async function handleSubmitAnswer(
               .onConflictDoNothing()
           }
         }
+      }
+
+      if (isLastQuestion) {
+        await tx
+          .update(dailySessions)
+          .set({ completed: true, completedAt: new Date() })
+          .where(eq(dailySessions.id, session.id))
+
+        await tx.insert(tokenLedger).values({
+          userId: user.id,
+          amount: 20,
+          reason: "daily_completion_bonus",
+          sessionId: session.id,
+        })
 
         if (isAllCorrect) {
           await tx
