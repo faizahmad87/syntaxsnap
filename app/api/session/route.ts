@@ -6,6 +6,7 @@ import { db } from "@/db"
 import { dailySessions, answers, tokenLedger } from "@/db/schema"
 import { getAuthenticatedUser } from "@/lib/auth"
 import { unauthorizedResponse, badRequestResponse } from "@/lib/api-utils"
+import { dailyQuestionsQuerySchema } from "@/modules/quiz/types/schemas"
 import type { ApiResponse } from "@/types/api-response"
 
 // DELETE /api/session?language=python
@@ -18,8 +19,10 @@ export async function DELETE(
     const user = await getAuthenticatedUser()
     if (!user) return unauthorizedResponse() as NextResponse<ApiResponse<null>>
 
-    const language = new URL(req.url).searchParams.get("language")
-    if (!language) return badRequestResponse("language is required") as NextResponse<ApiResponse<null>>
+    const raw = new URL(req.url).searchParams.get("language")
+    const parsed = dailyQuestionsQuerySchema.safeParse({ language: raw })
+    if (!parsed.success) return badRequestResponse("invalid language") as NextResponse<ApiResponse<null>>
+    const { language } = parsed.data
 
     const today = format(new Date(), "yyyy-MM-dd")
 
